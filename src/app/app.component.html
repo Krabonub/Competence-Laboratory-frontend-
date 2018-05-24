@@ -1,12 +1,13 @@
 <header>
   <mat-toolbar color="primary">
     <span class="example-spacer"></span>
-    <button mat-raised-button color="warn">Log Out</button>
+    <button mat-raised-button color="accent" *ngIf="isAuthentificated()" routerLink="" (click)="logOut()">Log Out</button>
+    <button mat-raised-button color="accent" *ngIf="!isAuthentificated()" routerLink="login">Log In</button>
   </mat-toolbar>
 </header>
 <main>
-  <mat-sidenav-container color="primary">
-    <mat-sidenav mode="side" opened>
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened *ngIf="isAuthentificated()">
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -29,7 +30,6 @@
           <a mat-list-item *ngFor="let link of competencesLinks" [routerLink]="link.path">
             {{link.label}}
           </a>
-          
         </mat-nav-list>
       </mat-expansion-panel>
     </mat-sidenav>
@@ -42,5 +42,6 @@
 </main>
 <footer>
   <mat-toolbar color="primary">
+    {{localStorageService.userEmail}}
   </mat-toolbar>
 </footer>

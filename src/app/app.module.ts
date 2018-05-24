@@ -2,17 +2,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DefaultImportsModule } from './modules/default-imports.module';
+import { SharedModule } from './modules/shared.module';
 import { CompetencesModule, CompetencesModuleRoutes } from './app-modules/competences/competences.module';
 import { UsersModule, UsersModuleRoutes } from './app-modules/users/users.module';
 
+import { AuthService } from './services/auth.service';
+
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/routes/login/login.component';
 import { NotFoundComponent } from './components/routes/not-found/not-found.component';
+import { LoginComponent } from './components/routes/login/login.component';
+import { LandingComponent } from './components/routes/landing/landing.component';
+
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: "login", component: LoginComponent },
+  { path: "", component: LandingComponent },
+  { path: 'login', component: LoginComponent },
   { path: "**", component: NotFoundComponent }
 ];
 
@@ -22,15 +26,18 @@ const appRoutes: Routes = [
     CompetencesModule,
     UsersModule,
     RouterModule.forRoot(appRoutes),
-    DefaultImportsModule
+    SharedModule
   ],
   declarations: [
     AppComponent,
+    NotFoundComponent,
     LoginComponent,
-    NotFoundComponent
+    LandingComponent
   ],
   entryComponents: [],
-  providers: [],
+  providers: [
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DefaultImportsModule } from '../../modules/default-imports.module';
+import { SharedModule } from '../../modules/shared.module';
 
 import { PositionsComponent } from './components/routes/positions/positions.component';
 import { CompetenceGroupsComponent } from './components/routes/competence-groups/competence-groups.component';
@@ -18,7 +18,7 @@ export const CompetencesModuleRoutes: Routes = [
 
 @NgModule({
   imports: [
-    DefaultImportsModule,
+    SharedModule,
     RouterModule.forChild(CompetencesModuleRoutes)
   ],
   declarations: [

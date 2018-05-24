@@ -1,0 +1,22 @@
+<form [formGroup]="addUserForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <input matInput placeholder="Email" formControlName="email" type="email">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Password" formControlName="password" type="password">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="First Name" formControlName="firstName">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Last Name" formControlName="lastName">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Position" formControlName="position">
+      <mat-option *ngFor="let pos of positions$ | async" [value]='pos'>
+        {{ pos.positionName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-raised-button type="submit" color="accent">Log in</button>
+</form>

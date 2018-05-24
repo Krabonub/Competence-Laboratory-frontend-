@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { LocalStorageService } from './services/local-storage.service';
+import { AuthService } from './services/auth.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -35,7 +38,27 @@ export class AppComponent {
     }
   ];
 
+  constructor(
+    private localStorageService: LocalStorageService,
+    private authService: AuthService
+  ) { }
+
   ngOnInit() {
-    
+  }
+
+  isAuthentificated() {
+    return !!this.localStorageService.userEmail;
+  }
+
+  logOut() {
+    this.authService.logOut().subscribe(
+      (res) => {
+        this.localStorageService.clearLocalStorage();
+        console.log(res);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 }
