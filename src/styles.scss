@@ -1,5 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 body {
   margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+mat-dialog-container {
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    mat-dialog-actions {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    mat-dialog-content {
+      width: 350px;
+    }
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  mat-divider.mat-divider {
+    margin: 10px 0;
+  }
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-input {
+  margin: 0 10px;
 }

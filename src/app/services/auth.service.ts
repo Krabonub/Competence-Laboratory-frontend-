@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { CommonHttpService } from './commonHttpService';
+import { HttpOptionsService } from './httpOptions.service';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
-export class AuthService extends CommonHttpService {
+export class AuthService extends HttpOptionsService {
   private logInURL = `${environment.API_URI}/auth/login`;
   private logOutURL = `${environment.API_URI}/auth/logout`;
 

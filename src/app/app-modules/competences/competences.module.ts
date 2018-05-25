@@ -8,6 +8,12 @@ import { PositionsComponent } from './components/routes/positions/positions.comp
 import { CompetenceGroupsComponent } from './components/routes/competence-groups/competence-groups.component';
 import { CompetenceListComponent } from './components/routes/competence-list/competence-list.component';
 import { LevelMatrixComponent } from './components/routes/level-matrix/level-matrix.component';
+import { AddCompetenceComponent } from './components/dialogues/add-competence/add-competence.component';
+import { EditCompetenceComponent } from './components/dialogues/edit-competence/edit-competence.component';
+import { AddCompetenceGroupComponent } from './components/dialogues/add-competence-group/add-competence-group.component';
+import { EditCompetenceGroupComponent } from './components/dialogues/edit-competence-group/edit-competence-group.component';
+import { AddPositionComponent } from './components/dialogues/add-position/add-position.component';
+import { EditPositionComponent } from './components/dialogues/edit-position/edit-position.component';
 
 export const CompetencesModuleRoutes: Routes = [
   { path: "competences/positions", component: PositionsComponent },
@@ -25,7 +31,21 @@ export const CompetencesModuleRoutes: Routes = [
     PositionsComponent,
     CompetenceGroupsComponent,
     CompetenceListComponent,
-    LevelMatrixComponent
+    LevelMatrixComponent,
+    AddCompetenceComponent,
+    EditCompetenceComponent,
+    AddCompetenceGroupComponent,
+    EditCompetenceGroupComponent,
+    AddPositionComponent,
+    EditPositionComponent
+  ],
+  entryComponents: [
+    AddCompetenceComponent,
+    EditCompetenceComponent,
+    AddCompetenceGroupComponent,
+    EditCompetenceGroupComponent,
+    AddPositionComponent,
+    EditPositionComponent
   ]
 })
 export class CompetencesModule { }

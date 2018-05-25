@@ -1,22 +1,21 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 
-
-import { Position } from '../../../../../models/position';
 import { PositionService } from '../../../../../services/position.service';
 import { UserService } from '../../../../../services/user.service';
+import { Position } from '../../../../../models/position';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-  selector: 'app-add-user',
-  templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.scss']
+  selector: 'app-edit-user',
+  templateUrl: './edit-user.component.html',
+  styleUrls: ['./edit-user.component.scss']
 })
-export class AddUserComponent implements OnInit {
-  addUserForm: FormGroup;
+export class EditUserComponent implements OnInit {
+  editUserForm: FormGroup;
   positions: Array<Position> = [];
   filteredPositions$: Observable<Array<Position>>;
 
@@ -24,22 +23,22 @@ export class AddUserComponent implements OnInit {
     private formBuilder: FormBuilder,
     private positionService: PositionService,
     private userService: UserService,
-    public dialogRef: MatDialogRef<AddUserComponent>,
+    public dialogRef: MatDialogRef<EditUserComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.addUserForm = formBuilder.group({
-      "email": ["", [Validators.required, Validators.email]],
-      "firstName": ["", [Validators.required]],
-      "lastName": ["", [Validators.required]],
-      "position": ["", [Validators.required]]
+    this.editUserForm = formBuilder.group({
+      "email": [data.email, [Validators.required, Validators.email]],
+      "firstName": [data.firstName, [Validators.required]],
+      "lastName": [data.lastName, [Validators.required]],
+      "position": [data.position.positionName, [Validators.required]]
     });
     this.positionService.getAllPositions().subscribe(
       (positions) => {
         this.positions = positions;
-        this.filteredPositions$ = this.addUserForm.controls.position.valueChanges.pipe(
+        this.filteredPositions$ = this.editUserForm.controls.position.valueChanges.pipe(
           startWith(''),
           map((state: any) => {
-            return state ? this.filterPositions(state) : this.positions;
+            return state ? this.filterPositions(state) : this.positions.slice();
           })
         );
       },
@@ -54,15 +53,17 @@ export class AddUserComponent implements OnInit {
   }
 
   public onSubmit() {
-    this.userService.adduser({
-      email: this.addUserForm.controls.email.value,
-      firstName: this.addUserForm.controls.firstName.value,
-      lastName: this.addUserForm.controls.lastName.value,
-      position: this.addUserForm.controls.position.value
+    console.log(this.editUserForm.controls.position.value);
+    this.userService.edituser({
+      email: this.editUserForm.controls.email.value,
+      firstName: this.editUserForm.controls.firstName.value,
+      lastName: this.editUserForm.controls.lastName.value,
+      position: this.editUserForm.controls.position.value,
+      userId: this.data._id
     }).subscribe(
       (user) => {
-        this.dialogRef.close();
         console.log(user);
+        this.dialogRef.close();
       },
       (error) => {
         console.error(error);
@@ -75,7 +76,7 @@ export class AddUserComponent implements OnInit {
   }
 
   public filterPositions(filter: string): Position[] {
-    return this.positions.filter((position) => {
+    return this.positions.filter((position: Position) => {
       return position.positionName.toLowerCase().indexOf(filter.toLowerCase()) === 0;
     });
   }
