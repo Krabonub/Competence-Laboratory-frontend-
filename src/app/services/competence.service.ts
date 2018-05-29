@@ -8,23 +8,23 @@ import { environment } from '../../environments/environment';
 export class CompetenceService extends HttpOptionsService {
   private addCompetenceURL = `${environment.API_URI}/competence/add`;
   private editCompetenceURL = `${environment.API_URI}/competence/edit`;
-  private getAllCompetencesURL = `${environment.API_URI}/competence/all`;
   private deleteCompetenceURL = `${environment.API_URI}/competence/delete`;
+  private getCompetencesURL = `${environment.API_URI}/competence/select`;
 
   constructor(private http: HttpClient) {
     super();
   }
 
-  addcompetence({ competenceName }) {
-    return this.http.post(this.addCompetenceURL, { competenceName }, this.httpOptions);
+  addCompetence({ competenceName, description, competenceGroup }) {
+    return this.http.post(this.addCompetenceURL, { competenceName, description, competenceGroup }, this.httpOptions);
   }
-  editcompetence({ competenceName, competenceId }) {
-    return this.http.post(this.editCompetenceURL, { competenceName, competenceId }, this.httpOptions);
+  editCompetence({ competenceName, description, competenceGroup, competenceId }) {
+    return this.http.post(this.editCompetenceURL, { competenceName, description, competenceGroup, competenceId }, this.httpOptions);
   }
-  getAllcompetences() {
-    return this.http.get(this.editCompetenceURL, this.httpOptions);
+  getCompetencesByGroup({ query }) {
+    return this.http.post(this.getCompetencesURL, { query }, this.httpOptions);
   }
-  deletecompetence({ competenceId }) {
-    return this.http.post(this.editCompetenceURL, { competenceId }, this.httpOptions);
+  deleteCompetence({ competenceId }) {
+    return this.http.post(this.deleteCompetenceURL, { competenceId }, this.httpOptions);
   }
 }

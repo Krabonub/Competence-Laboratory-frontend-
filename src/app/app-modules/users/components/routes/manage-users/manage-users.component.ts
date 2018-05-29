@@ -27,7 +27,7 @@ export class ManageUsersComponent implements OnInit {
     private userService: UserService,
     public dialog: MatDialog
   ) {
-    this.resetDtataSource();
+    this.resetDataSource();
   }
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class ManageUsersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.resetDtataSource();
+      this.resetDataSource();
     });
   }
 
@@ -49,7 +49,7 @@ export class ManageUsersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.resetDtataSource();
+      this.resetDataSource();
     });
 
   }
@@ -60,7 +60,7 @@ export class ManageUsersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.resetDtataSource();
+      this.resetDataSource();
     });
   }
 
@@ -70,11 +70,11 @@ export class ManageUsersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.resetDtataSource();
+      this.resetDataSource();
     });
   }
 
-  public resetDtataSource() {
+  public resetDataSource() {
     this.userService.getAllusers().subscribe(
       (userList) => {
         this.dataSource = new MatTableDataSource(userList);

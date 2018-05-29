@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
+import { LocalStorageService } from '../../../services/local-storage.service';
+
+import { User } from '../../../models/user';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +28,8 @@ export class LoginComponent implements OnInit {
   });
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    public localStorageService: LocalStorageService
   ) { }
 
   ngOnInit() {
@@ -36,7 +40,8 @@ export class LoginComponent implements OnInit {
       this.authService.logIn({
         email: this.loginForm.controls.email.value,
         password: this.loginForm.controls.password.value
-      }).subscribe((user) => {
+      }).subscribe((user: User) => {
+        this.localStorageService.setUserToLocalstorage(user);
         console.log(user);
       }, (error) => {
         console.error(error);

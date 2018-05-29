@@ -1,3 +1,23 @@
-<p>
-  add-competence works!
-</p>
+<h3>Add Competence</h3>
+<mat-divider></mat-divider>
+<form [formGroup]="addCompetenceForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Name" formControlName="competenceName">
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput placeholder="Description" formControlName="description"></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Group" formControlName="competenceGroup">
+        <mat-option *ngFor="let group of data.competenceGroups" [value]="group._id">
+          {{ group.competenceGroupName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button type="submit" color="accent">Save</button>
+    <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>

@@ -14,6 +14,9 @@ import { AddCompetenceGroupComponent } from './components/dialogues/add-competen
 import { EditCompetenceGroupComponent } from './components/dialogues/edit-competence-group/edit-competence-group.component';
 import { AddPositionComponent } from './components/dialogues/add-position/add-position.component';
 import { EditPositionComponent } from './components/dialogues/edit-position/edit-position.component';
+import { DeleteCompetenceGroupComponent } from './components/dialogues/delete-competence-group/delete-competence-group.component';
+import { DeleteCompetenceComponent } from './components/dialogues/delete-competence/delete-competence.component';
+import { DeletePositionComponent } from './components/dialogues/delete-position/delete-position.component';
 
 export const CompetencesModuleRoutes: Routes = [
   { path: "competences/positions", component: PositionsComponent },
@@ -37,7 +40,10 @@ export const CompetencesModuleRoutes: Routes = [
     AddCompetenceGroupComponent,
     EditCompetenceGroupComponent,
     AddPositionComponent,
-    EditPositionComponent
+    EditPositionComponent,
+    DeleteCompetenceGroupComponent,
+    DeleteCompetenceComponent,
+    DeletePositionComponent
   ],
   entryComponents: [
     AddCompetenceComponent,
@@ -45,7 +51,10 @@ export const CompetencesModuleRoutes: Routes = [
     AddCompetenceGroupComponent,
     EditCompetenceGroupComponent,
     AddPositionComponent,
-    EditPositionComponent
+    EditPositionComponent,
+    DeleteCompetenceGroupComponent,
+    DeleteCompetenceComponent,
+    DeletePositionComponent
   ]
 })
 export class CompetencesModule { }

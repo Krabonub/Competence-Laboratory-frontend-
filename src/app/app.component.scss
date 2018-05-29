@@ -21,6 +21,10 @@ mat-expansion-panel {
 mat-sidenav-container {
   height: 100%;
   width: 100%;
+}
+
+mat-sidenav-content{
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

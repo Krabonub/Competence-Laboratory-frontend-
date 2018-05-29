@@ -1,3 +1,42 @@
-<p>
-  competence-list works!
-</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Competence List</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="table-header">
+      <mat-form-field>
+        <mat-select placeholder="Competence group" [(ngModel)]="selectedGroup" (change)="selectCompetenceGroup()">
+          <mat-option value="all">
+            all groups
+          </mat-option>
+          <mat-option *ngFor="let group of competenceGroups" [value]="group._id">
+            {{group.competenceGroupName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <span class="example-spacer"></span>
+      <button mat-raised-button color="accent" (click)="addCompetence()">Add</button>
+    </div>
+    <mat-table #table [dataSource]="dataSource">
+      <ng-container matColumnDef="competenceName">
+        <mat-header-cell *matHeaderCellDef> Competence Name </mat-header-cell>
+        <mat-cell *matCellDef="let competence"> {{competence.competenceName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="competenceGroup">
+        <mat-header-cell *matHeaderCellDef> Competence Group</mat-header-cell>
+        <mat-cell *matCellDef="let competence"> {{competence.competenceGroup.competenceGroupName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let competence">
+          <button mat-button color="primary" (click)="editCompetence(competence)">Edit</button>
+          <button mat-button color="warn" (click)="deleteCompetence(competence)">Delete</button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15, 30, 45, dataSource.data.length]" [showFirstLastButtons]="true">
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

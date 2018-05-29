@@ -15,7 +15,8 @@ export class AuthService extends HttpOptionsService {
   logIn({ email, password }) {
     return this.http.post(this.logInURL, { email, password }, this.httpOptions);
   }
+
   logOut() {
-    return this.http.get(this.logInURL, this.httpOptions);
+    return this.http.get(this.logOutURL, this.httpOptions);
   }
 }

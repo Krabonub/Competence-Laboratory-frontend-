@@ -1,26 +1,26 @@
 <header>
   <mat-toolbar color="primary">
     <span class="example-spacer"></span>
-    <button mat-raised-button color="accent" *ngIf="isAuthentificated()" routerLink="" (click)="logOut()">Log Out</button>
-    <button mat-raised-button color="accent" *ngIf="!isAuthentificated()" routerLink="login">Log In</button>
+    <button mat-raised-button color="accent" *ngIf="(localStorageService.user$| async)" routerLink="" (click)="logOut()">Log Out</button>
+    <button mat-raised-button color="accent" *ngIf="!(localStorageService.user$ | async)" routerLink="login">Log In</button>
   </mat-toolbar>
 </header>
 <main>
   <mat-sidenav-container>
-    <mat-sidenav mode="side" opened *ngIf="isAuthentificated()">
-      <mat-expansion-panel>
+    <mat-sidenav mode="side" opened *ngIf="(localStorageService.user$ | async)">
+      <mat-expansion-panel *ngFor="let rubric of rubrics">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Users
+            {{rubric.rubricName}}
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-nav-list>
-          <a mat-list-item [routerLink]="link.path" *ngFor="let link of userLinks">
+          <a mat-list-item [routerLink]="link.path" *ngFor="let link of rubric.links">
               {{link.label}}
           </a>
         </mat-nav-list>
       </mat-expansion-panel>
-      <mat-expansion-panel>
+      <!--<mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
             Competences
@@ -32,6 +32,7 @@
           </a>
         </mat-nav-list>
       </mat-expansion-panel>
+      -->
     </mat-sidenav>
     <mat-sidenav-content class="main">
       <!--MAIN CONTENT-->
@@ -42,6 +43,5 @@
 </main>
 <footer>
   <mat-toolbar color="primary">
-    {{localStorageService.userEmail}}
   </mat-toolbar>
 </footer>

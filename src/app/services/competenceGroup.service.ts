@@ -3,6 +3,8 @@ import { HttpOptionsService } from './httpOptions.service';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs/Observable';
+import { CompetenceGroup } from '../models/competenceGroup';
 
 @Injectable()
 export class CompetenceGroupService extends HttpOptionsService {
@@ -15,16 +17,16 @@ export class CompetenceGroupService extends HttpOptionsService {
     super();
   }
 
-  addcompetenceGroup({ competenceGroupName }) {
+  addCompetenceGroup({ competenceGroupName }): Observable<any> {
     return this.http.post(this.addCompetenceGroupURL, { competenceGroupName }, this.httpOptions);
   }
-  editcompetenceGroup({ competenceGroupName, competenceGroupId }) {
+  editCompetenceGroup({ competenceGroupName, competenceGroupId }): Observable<any> {
     return this.http.post(this.editCompetenceGroupURL, { competenceGroupName, competenceGroupId }, this.httpOptions);
   }
-  getAllcompetenceGroups() {
-    return this.http.get(this.editCompetenceGroupURL, this.httpOptions);
+  getAllCompetenceGroups(): Observable<any> {
+    return this.http.get(this.getAllCompetenceGroupsURL, this.httpOptions);
   }
-  deletecompetenceGroup({ competenceGroupId }) {
-    return this.http.post(this.editCompetenceGroupURL, { competenceGroupId }, this.httpOptions);
+  deleteCompetenceGroup({ competenceGroupId }): Observable<any> {
+    return this.http.post(this.deleteCompetenceGroupURL, { competenceGroupId }, this.httpOptions);
   }
 }

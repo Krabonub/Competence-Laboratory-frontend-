@@ -10,12 +10,16 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { LocalStorageService } from '../services/local-storage.service';
 import { PositionService } from '../services/position.service';
 import { UserService } from '../services/user.service';
+import { CompetenceGroupService } from '../services/competenceGroup.service';
+import { CompetenceService } from '../services/competence.service';
 
 @NgModule({
   providers: [
     LocalStorageService,
     PositionService,
-    UserService
+    UserService,
+    CompetenceGroupService,
+    CompetenceService
   ],
   imports: [
     CommonModule,

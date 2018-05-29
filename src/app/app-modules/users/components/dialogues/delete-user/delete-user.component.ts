@@ -26,7 +26,6 @@ export class DeleteUserComponent implements OnInit {
   onSubmit() {
     this.userService.deleteuser({ userId: this.data._id }).subscribe(
       (user) => {
-        console.log(user);
         this.dialogRef.close();
       },
       (error) => {
