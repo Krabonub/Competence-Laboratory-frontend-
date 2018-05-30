@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { PositionService } from '../../../../../services/position.service';
+import { Position } from '../../../../../models/position';
+
 @Component({
   selector: 'app-level-matrix',
   templateUrl: './level-matrix.component.html',
@@ -7,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LevelMatrixComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public positionService: PositionService
+  ) { }
 
   ngOnInit() {
+  }
+
+  addCompetenceGroup() {
+    this.positionService.
   }
 
 }

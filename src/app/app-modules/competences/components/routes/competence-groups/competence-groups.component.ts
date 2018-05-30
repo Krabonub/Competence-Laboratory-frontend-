@@ -42,7 +42,7 @@ export class CompetenceGroupsComponent implements OnInit {
   }
 
   public editCompetenceGroup(group: CompetenceGroup) {
-    let dialogRef = this.dialog.open(AddCompetenceGroupComponent, {
+    let dialogRef = this.dialog.open(EditCompetenceGroupComponent, {
       data: group
     });
 

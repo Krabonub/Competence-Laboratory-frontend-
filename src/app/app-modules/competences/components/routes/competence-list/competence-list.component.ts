@@ -47,9 +47,9 @@ export class CompetenceListComponent implements OnInit {
     });
   }
 
-  public editCompetence(comp: Competence) {
+  public editCompetence(competence: Competence) {
     let dialogRef = this.dialog.open(EditCompetenceComponent, {
-      data: comp
+      data: { competence, competenceGroups: this.competenceGroups }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -59,9 +59,9 @@ export class CompetenceListComponent implements OnInit {
     });
   }
 
-  public deleteCompetence(comp: Competence) {
+  public deleteCompetence(competence: Competence) {
     let dialogRef = this.dialog.open(DeleteCompetenceComponent, {
-      data: comp
+      data: competence
     });
 
     dialogRef.afterClosed().subscribe(result => {

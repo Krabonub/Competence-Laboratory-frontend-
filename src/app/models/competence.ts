@@ -1,6 +1,10 @@
 export class Competence {
   competenceName: string;
-  constructor({ competenceName }) {
+  competenceGroup: string;
+  _id?: string;
+
+  constructor({ competenceName, competenceGroup }) {
     this.competenceName = competenceName;
+    this.competenceGroup = competenceGroup;
   }
 }

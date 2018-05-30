@@ -11,6 +11,7 @@ export class PositionService extends HttpOptionsService {
   private editPositionURL = `${environment.API_URI}/position/edit`;
   private getAllPositionsURL = `${environment.API_URI}/position/all`;
   private deletePositionURL = `${environment.API_URI}/position/delete`;
+  private addCompetenceGroupURL = `${environment.API_URI}/position/delete`;
 
   constructor(private http: HttpClient) {
     super();
@@ -27,5 +28,8 @@ export class PositionService extends HttpOptionsService {
   }
   deletePosition({ positionId }): Observable<any> {
     return this.http.post(this.deletePositionURL, { positionId }, this.httpOptions);
+  }
+  addCompetenceGroup({ positionId, competenceGroup }): Observable<any> {
+    return this.http.post(this.addCompetenceGroupURL, { positionId, competenceGroup }, this.httpOptions);
   }
 }

@@ -1,3 +1,13 @@
-<p>
-  edit-competence-group works!
-</p>
+<h3>Edit Competence Group</h3>
+<mat-divider></mat-divider>
+<form [formGroup]="editCompetenceGroupForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <input matInput placeholder="Group Name" formControlName="groupName">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button type="submit" color="accent">Save</button>
+    <button mat-raised-button type="button" mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>
