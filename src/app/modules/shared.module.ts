@@ -12,6 +12,7 @@ import { PositionService } from '../services/position.service';
 import { UserService } from '../services/user.service';
 import { CompetenceGroupService } from '../services/competenceGroup.service';
 import { CompetenceService } from '../services/competence.service';
+import { LevelService } from '../services/level.service';
 
 @NgModule({
   providers: [
@@ -19,7 +20,8 @@ import { CompetenceService } from '../services/competence.service';
     PositionService,
     UserService,
     CompetenceGroupService,
-    CompetenceService
+    CompetenceService,
+    LevelService
   ],
   imports: [
     CommonModule,

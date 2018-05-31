@@ -1,4 +1,49 @@
-<p>
-  level-matrix works!
-</p>
-<button mat-rised-button (click)="addCompetenceGroup()">Add</button>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Level Matrix</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-select placeholder="Position" [(ngModel)]="selectedPosition" (change)="getAdditionalCompetenceGroups(selectedPosition)">
+        <mat-option *ngFor="let position of allPositions" [value]="position">
+          {{ position.positionName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Add Competecne Group" [(ngModel)]="selectedCompetenceGroup">
+        <mat-option *ngFor="let group of allCompetenceGroups" [value]="group">
+          {{ group.competenceGroupName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="addCompetenceGroup()">Add</button>
+    <table>
+      <thead>
+        <tr>
+          <td></td>
+          <td *ngFor="let level of allLevels">
+            {{ level.levelName }}
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let competenceGroup of positionCompetenceGroups">
+          <tr>
+            <td attr.colspan="{{allLevels.length}}">
+              {{ competenceGroup.competenceGroupName }}
+              <button mat-raised-button color="warn" (click)="deleteCompetenceGroup(competenceGroup._id)">Delete</button>
+            </td>
+          </tr>
+          <tr *ngFor="let competence of competenceGroup">
+            <td>{{ competence.competenceName }}</td>
+            <td *ngFor="let mark of competence.marks">
+              <input type="number" min="0" max="4">
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <button mat-raised-button color="accent" (click)="saveCompetenceLevelRequirements()">Save</button>
+  </mat-card-content>
+</mat-card>
