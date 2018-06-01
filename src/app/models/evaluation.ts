@@ -1,7 +1,4 @@
 export class Evaluation {
+  _id: string;
   evaluationName: string;
-  _id?: string;
-  constructor({ evaluationName }) {
-    this.evaluationName = evaluationName;
-  }
 }

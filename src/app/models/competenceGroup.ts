@@ -1,8 +1,7 @@
-export class CompetenceGroup {
-  competenceGroupName: string;
-  _id?: string;
+import { Competence } from './competence'
 
-  constructor({ competenceGroupName }) {
-    this.competenceGroupName = competenceGroupName;
-  }
+export class CompetenceGroup {
+  _id: string;
+  competenceGroupName: string;
+  competences: (string | Competence)[];
 }

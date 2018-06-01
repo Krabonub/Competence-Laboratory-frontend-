@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 import { PositionService } from '../../../../../services/position.service';
-import { Position } from '../../../../../models/position';
+import { Position, LevelRequirementsCompetenceGroup } from '../../../../../models/position';
 import { CompetenceGroup } from '../../../../../models/competenceGroup';
 import { CompetenceGroupService } from '../../../../../services/competenceGroup.service';
 import { Level } from '../../../../../models/level';
 import { LevelService } from '../../../../../services/level.service';
+
 
 @Component({
   selector: 'app-level-matrix',
@@ -16,9 +17,9 @@ export class LevelMatrixComponent implements OnInit {
   selectedPosition: Position;
   selectedCompetenceGroup: CompetenceGroup;
   allPositions: Position[] = [];
-  allCompetenceGroups: CompetenceGroup[] = [];
+  additionalCompetenceGroups: CompetenceGroup[] = [];
   allLevels: Level[] = [];
-  positionCompetenceGroups: CompetenceGroup[] = [];
+  levelRequirementsCompetenceGroups: LevelRequirementsCompetenceGroup[] = [];
 
   constructor(
     public positionService: PositionService,
@@ -43,15 +44,16 @@ export class LevelMatrixComponent implements OnInit {
     );
   }
 
-  public selectPosition(position) {
-    this.getPositionCompetenceGroups();
+  public refreshMatrix(position) {
+    this.getLevelMatrix();
     this.getAdditionalCompetenceGroups(position);
+    this.selectedCompetenceGroup = null;
   }
 
   public getAdditionalCompetenceGroups(selectedPosition) {
-    this.competenceGroupService.getExcept(selectedPosition.competenceGroups).subscribe(
+    this.competenceGroupService.getExcept(Position.getPositionGroups(selectedPosition)).subscribe(
       (competenceGroupList) => {
-        this.allCompetenceGroups = competenceGroupList;
+        this.additionalCompetenceGroups = competenceGroupList;
       },
       (error) => {
         console.log(error);
@@ -61,9 +63,9 @@ export class LevelMatrixComponent implements OnInit {
 
   public addCompetenceGroup() {
     if (this.selectedPosition && this.selectedCompetenceGroup) {
-      this.positionService.addCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroup: this.selectedCompetenceGroup._id }).subscribe(
+      this.positionService.addCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroupId: this.selectedCompetenceGroup._id }).subscribe(
         (position) => {
-          this.getAdditionalCompetenceGroups(position);
+          this.refreshMatrix(position);
         },
         (error) => {
           console.error(error);
@@ -74,9 +76,9 @@ export class LevelMatrixComponent implements OnInit {
 
   public deleteCompetenceGroup(groupId) {
     if (this.selectedPosition) {
-      this.positionService.deleteCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroup: groupId }).subscribe(
+      this.positionService.deleteCompetenceGroup({ positionId: this.selectedPosition._id, levelRequirementsCompetenceGroupId: groupId }).subscribe(
         (position) => {
-          this.getAdditionalCompetenceGroups(position);
+          this.refreshMatrix(position);
         },
         (error) => {
           console.error(error);
@@ -85,8 +87,16 @@ export class LevelMatrixComponent implements OnInit {
     }
   }
 
-  private getPositionCompetenceGroups() {
-
+  private getLevelMatrix() {
+    this.positionService.getLevelMatrix({ positionId: this.selectedPosition._id }).subscribe(
+      (position: Position) => {
+        this.levelRequirementsCompetenceGroups = position.levelRequirementsCompetenceGroups;
+        console.log(position);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 
   private getAllLevels() {
