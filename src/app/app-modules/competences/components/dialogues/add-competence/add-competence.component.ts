@@ -33,7 +33,7 @@ export class AddCompetenceComponent implements OnInit {
     this.competenceService.addCompetence({
       competenceName: this.addCompetenceForm.controls.competenceName.value,
       description: this.addCompetenceForm.controls.description.value,
-      competenceGroup: this.addCompetenceForm.controls.competenceGroup.value
+      competenceGroupId: this.addCompetenceForm.controls.competenceGroup.value
     }).subscribe(
       (comp) => {
         this.dialogRef.close(true);

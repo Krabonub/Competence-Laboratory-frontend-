@@ -1,0 +1,6 @@
+<div (dblclick)="changeMode()">
+  <input type="number" min="0" max="4" *ngIf="editorMode" [(ngModel)]="mark" (ngModelChange)="validate($event)">
+  <span *ngIf="!editorMode">
+    {{mark}}
+  </span>
+</div>

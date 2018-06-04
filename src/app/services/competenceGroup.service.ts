@@ -30,7 +30,7 @@ export class CompetenceGroupService extends HttpOptionsService {
   deleteCompetenceGroup({ competenceGroupId }): Observable<any> {
     return this.http.post(this.deleteCompetenceGroupURL, { competenceGroupId }, this.httpOptions);
   }
-  getExcept(except): Observable<any> {
+  getExcept({ except }): Observable<any> {
     return this.http.post(this.getExceptCompetenceGroupURL, { except }, this.httpOptions);
   }
 }

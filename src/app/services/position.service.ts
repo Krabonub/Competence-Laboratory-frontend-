@@ -13,7 +13,6 @@ export class PositionService extends HttpOptionsService {
   private deletePositionURL = `${environment.API_URI}/position/delete`;
   private addCompetenceGroupURL = `${environment.API_URI}/position/addCompetenceGroup`;
   private deleteCompetenceGroupURL = `${environment.API_URI}/position/deleteCompetenceGroup`;
-  private getLevelMatrixURL = `${environment.API_URI}/position/getLevelMatrix`;
 
   constructor(private http: HttpClient) {
     super();
@@ -34,10 +33,7 @@ export class PositionService extends HttpOptionsService {
   addCompetenceGroup({ positionId, competenceGroupId }): Observable<any> {
     return this.http.post(this.addCompetenceGroupURL, { positionId, competenceGroupId }, this.httpOptions);
   }
-  deleteCompetenceGroup({ positionId, levelRequirementsCompetenceGroupId }): Observable<any> {
-    return this.http.post(this.deleteCompetenceGroupURL, { positionId, levelRequirementsCompetenceGroupId }, this.httpOptions);
-  }
-  getLevelMatrix({ positionId }) {
-    return this.http.post(this.getLevelMatrixURL, { positionId }, this.httpOptions);
+  deleteCompetenceGroup({ positionId, competenceGroupId }): Observable<any> {
+    return this.http.post(this.deleteCompetenceGroupURL, { positionId, competenceGroupId }, this.httpOptions);
   }
 }

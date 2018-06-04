@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 import { PositionService } from '../../../../../services/position.service';
-import { Position, LevelRequirementsCompetenceGroup } from '../../../../../models/position';
+import { Position } from '../../../../../models/position';
 import { CompetenceGroup } from '../../../../../models/competenceGroup';
 import { CompetenceGroupService } from '../../../../../services/competenceGroup.service';
 import { Level } from '../../../../../models/level';
 import { LevelService } from '../../../../../services/level.service';
+import { CompetenceLevelRequirementService } from '../../../../../services/competenceLevelRequirements.service';
 
 
 @Component({
@@ -14,29 +15,31 @@ import { LevelService } from '../../../../../services/level.service';
   styleUrls: ['./level-matrix.component.scss']
 })
 export class LevelMatrixComponent implements OnInit {
-  selectedPosition: Position;
-  selectedCompetenceGroup: CompetenceGroup;
+  allLevels: Level[] = [];
   allPositions: Position[] = [];
   additionalCompetenceGroups: CompetenceGroup[] = [];
-  allLevels: Level[] = [];
-  levelRequirementsCompetenceGroups: LevelRequirementsCompetenceGroup[] = [];
+  selectedCompetenceGroup;
+  selectedPosition;
+  dataSource = [];
 
   constructor(
     public positionService: PositionService,
     public competenceGroupService: CompetenceGroupService,
-    public levelService: LevelService
+    public levelService: LevelService,
+    public competenceLevelRequirementService: CompetenceLevelRequirementService
   ) {
   }
 
   ngOnInit() {
     this.getPositions();
-    this.getAllLevels();
+    this.getLevels();
   }
 
   getPositions() {
     this.positionService.getAllPositions().subscribe(
-      (positionList) => {
-        this.allPositions = positionList;
+      (positions) => {
+        console.log(positions);
+        this.allPositions = positions;
       },
       (error) => {
         console.log(error);
@@ -44,73 +47,97 @@ export class LevelMatrixComponent implements OnInit {
     );
   }
 
-  public refreshMatrix(position) {
-    this.getLevelMatrix();
-    this.getAdditionalCompetenceGroups(position);
-    this.selectedCompetenceGroup = null;
-  }
-
-  public getAdditionalCompetenceGroups(selectedPosition) {
-    this.competenceGroupService.getExcept(Position.getPositionGroups(selectedPosition)).subscribe(
-      (competenceGroupList) => {
-        this.additionalCompetenceGroups = competenceGroupList;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-
-  public addCompetenceGroup() {
-    if (this.selectedPosition && this.selectedCompetenceGroup) {
-      this.positionService.addCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroupId: this.selectedCompetenceGroup._id }).subscribe(
-        (position) => {
-          this.refreshMatrix(position);
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    }
-  }
-
-  public deleteCompetenceGroup(groupId) {
-    if (this.selectedPosition) {
-      this.positionService.deleteCompetenceGroup({ positionId: this.selectedPosition._id, levelRequirementsCompetenceGroupId: groupId }).subscribe(
-        (position) => {
-          this.refreshMatrix(position);
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    }
-  }
-
-  private getLevelMatrix() {
-    this.positionService.getLevelMatrix({ positionId: this.selectedPosition._id }).subscribe(
-      (position: Position) => {
-        this.levelRequirementsCompetenceGroups = position.levelRequirementsCompetenceGroups;
-        console.log(position);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-
-  private getAllLevels() {
+  getLevels() {
     this.levelService.getAllLevels().subscribe(
-      (levels: Level[]) => {
+      (levels) => {
+        console.log(levels);
         this.allLevels = levels;
       },
       (error) => {
-        console.error(error);
+        console.log(error);
       }
-    )
+    );
   }
 
-  public saveCompetenceLevelRequirements() {
+  getAdditionalCompetenceGroups() {
+    this.competenceGroupService.getExcept({ except: this.selectedPosition.competenceGroups.map((group) => { return group._id }) }).subscribe(
+      (groups) => {
+        console.log(groups);
+        this.additionalCompetenceGroups = groups;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 
+  selectPosition() {
+    this.getAdditionalCompetenceGroups();
+    this.getCompetenceLevelRequirements();
+  }
+
+  addCompetenceGroup() {
+    this.positionService.addCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroupId: this.selectedCompetenceGroup._id }).subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  deleteCompetenceGroup(competenceGroupId) {
+    this.positionService.deleteCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroupId }).subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  getCompetenceLevelRequirements() {
+    this.competenceLevelRequirementService.getRequirements({ positionId: this.selectedPosition._id }).subscribe(
+      (requirements) => {
+        var competencesObj = {};
+        var competenceGroupsObj = {};
+        requirements.forEach((requirement) => {
+          if (!competencesObj[requirement.competence._id]) {
+            competencesObj[requirement.competence._id] = {
+              competence: requirement.competence,
+              requirements: []
+            };
+          }
+          competencesObj[requirement.competence._id].requirements.push(requirement);
+        });
+        var competences = Object.values(competencesObj);
+        competences.forEach((competence: any) => {
+          if (!competenceGroupsObj[competence.competence.competenceGroup._id]) {
+            competenceGroupsObj[competence.competence.competenceGroup._id] = {
+              competenceGroup: competence.competence.competenceGroup,
+              competences: []
+            }
+          }
+          competenceGroupsObj[competence.competence.competenceGroup._id].competences.push(competence);
+        });
+        this.dataSource = Object.values(competenceGroupsObj);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  saveCompetenceLevelRequirements() {
+    this.competenceLevelRequirementService.editRequirements({ positionId: this.selectedPosition._id }).subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }

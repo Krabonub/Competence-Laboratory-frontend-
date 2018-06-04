@@ -15,8 +15,8 @@ export class CompetenceService extends HttpOptionsService {
     super();
   }
 
-  addCompetence({ competenceName, description, competenceGroup }) {
-    return this.http.post(this.addCompetenceURL, { competenceName, description, competenceGroup }, this.httpOptions);
+  addCompetence({ competenceName, description, competenceGroupId }) {
+    return this.http.post(this.addCompetenceURL, { competenceName, description, competenceGroupId }, this.httpOptions);
   }
   editCompetence({ competenceName, description, competenceGroup, competenceId }) {
     return this.http.post(this.editCompetenceURL, { competenceName, description, competenceGroup, competenceId }, this.httpOptions);

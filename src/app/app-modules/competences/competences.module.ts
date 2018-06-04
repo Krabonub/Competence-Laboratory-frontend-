@@ -17,6 +17,7 @@ import { EditPositionComponent } from './components/dialogues/edit-position/edit
 import { DeleteCompetenceGroupComponent } from './components/dialogues/delete-competence-group/delete-competence-group.component';
 import { DeleteCompetenceComponent } from './components/dialogues/delete-competence/delete-competence.component';
 import { DeletePositionComponent } from './components/dialogues/delete-position/delete-position.component';
+import { DblClickInput } from './components/partials/dblClickInput/dblClickInput.component';
 
 export const CompetencesModuleRoutes: Routes = [
   { path: "competences/positions", component: PositionsComponent },
@@ -43,7 +44,8 @@ export const CompetencesModuleRoutes: Routes = [
     EditPositionComponent,
     DeleteCompetenceGroupComponent,
     DeleteCompetenceComponent,
-    DeletePositionComponent
+    DeletePositionComponent,
+    DblClickInput
   ],
   entryComponents: [
     AddCompetenceComponent,

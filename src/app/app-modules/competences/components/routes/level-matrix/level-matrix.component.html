@@ -4,7 +4,7 @@
   </mat-card-header>
   <mat-card-content>
     <mat-form-field>
-      <mat-select placeholder="Position" [(ngModel)]="selectedPosition" (change)="refreshMatrix(selectedPosition)">
+      <mat-select placeholder="Position" [(ngModel)]="selectedPosition" (change)="selectPosition()">
         <mat-option *ngFor="let position of allPositions" [value]="position">
           {{ position.positionName }}
         </mat-option>
@@ -20,17 +20,18 @@
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let lvlReqGroup of levelRequirementsCompetenceGroups">
+        <ng-container *ngFor="let group of dataSource">
           <tr>
-            <td attr.colspan="{{allLevels.length}}">
-              {{ lvlReqGroup.competenceGroup.competenceGroupName }}
-              <button mat-raised-button color="warn" (click)="deleteCompetenceGroup(lvlReqGroup._id)">Delete</button>
+            <td attr.colspan="{{allLevels.length + 1}}">
+              {{ group.competenceGroup.competenceGroupName }}
+              <button mat-raised-button color="warn" (click)="deleteCompetenceGroup(group.competenceGroup._id)">Delete</button>
             </td>
           </tr>
-          <tr *ngFor="let lvlReqComp of lvlReqGroup.levelRequirementsCompetences">
-            <td>{{ lvlReqComp.competence.competenceName }}</td>
-            <td *ngFor="let req of lvlReqComp.competenceLevelRequirements">
-              <input type="number" min="0" max="4" [value]="req.mark">
+          <tr *ngFor="let competence of group.competences">
+            <td>{{ competence.competence.competenceName }}</td>
+            <td *ngFor="let req of competence.requirements">
+              <!--<input type="number" min="0" max="4" [value]="req.mark">-->
+              <app-dblCkickInput [levelRequirement]="req"></app-dblCkickInput>
             </td>
           </tr>
         </ng-container>
@@ -44,6 +45,7 @@
       </mat-select>
     </mat-form-field>
     <button mat-raised-button color="primary" (click)="addCompetenceGroup()">Add</button>
+    <button mat-raised-button color="primary" (click)="deleteCompetenceGroup(selectedCompetenceGroup._Id)">Delete</button>
     <button mat-raised-button color="accent" (click)="saveCompetenceLevelRequirements()">Save</button>
   </mat-card-content>
 </mat-card>
