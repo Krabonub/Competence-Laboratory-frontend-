@@ -6,8 +6,16 @@ import { CompetenceGroup } from '../../../../../models/competenceGroup';
 import { CompetenceGroupService } from '../../../../../services/competenceGroup.service';
 import { Level } from '../../../../../models/level';
 import { LevelService } from '../../../../../services/level.service';
-import { CompetenceLevelRequirementService } from '../../../../../services/competenceLevelRequirements.service';
+import { CompetenceLevelRequirementService, editRequirement } from '../../../../../services/competenceLevelRequirements.service';
+import { FormGroup, FormControl } from '@angular/forms';
+import { CompetenceLevelRequirement } from '../../../../../models/competenceLevelRequirement';
 
+/*function inRange(input: FormControl) {
+  if (input.value === null || input.value < 0 || input.value > 4 || input.value % 1) {
+    return { outOfRange: true };
+  }
+  return null;
+}*/
 
 @Component({
   selector: 'app-level-matrix',
@@ -21,6 +29,9 @@ export class LevelMatrixComponent implements OnInit {
   selectedCompetenceGroup;
   selectedPosition;
   dataSource = [];
+  allRequrements: CompetenceLevelRequirement[] = [];
+  markInputFormGroup: FormGroup;
+
 
   constructor(
     public positionService: PositionService,
@@ -28,6 +39,7 @@ export class LevelMatrixComponent implements OnInit {
     public levelService: LevelService,
     public competenceLevelRequirementService: CompetenceLevelRequirementService
   ) {
+    this.markInputFormGroup = new FormGroup({});
   }
 
   ngOnInit() {
@@ -38,7 +50,6 @@ export class LevelMatrixComponent implements OnInit {
   getPositions() {
     this.positionService.getAllPositions().subscribe(
       (positions) => {
-        console.log(positions);
         this.allPositions = positions;
       },
       (error) => {
@@ -50,7 +61,6 @@ export class LevelMatrixComponent implements OnInit {
   getLevels() {
     this.levelService.getAllLevels().subscribe(
       (levels) => {
-        console.log(levels);
         this.allLevels = levels;
       },
       (error) => {
@@ -62,7 +72,6 @@ export class LevelMatrixComponent implements OnInit {
   getAdditionalCompetenceGroups() {
     this.competenceGroupService.getExcept({ except: this.selectedPosition.competenceGroups.map((group) => { return group._id }) }).subscribe(
       (groups) => {
-        console.log(groups);
         this.additionalCompetenceGroups = groups;
       },
       (error) => {
@@ -72,14 +81,14 @@ export class LevelMatrixComponent implements OnInit {
   }
 
   selectPosition() {
-    this.getAdditionalCompetenceGroups();
-    this.getCompetenceLevelRequirements();
+    this.refreshDataSource();
   }
 
   addCompetenceGroup() {
     this.positionService.addCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroupId: this.selectedCompetenceGroup._id }).subscribe(
       (res) => {
         console.log(res);
+        this.refreshDataSource();
       },
       (error) => {
         console.log(error);
@@ -91,6 +100,7 @@ export class LevelMatrixComponent implements OnInit {
     this.positionService.deleteCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroupId }).subscribe(
       (res) => {
         console.log(res);
+        this.refreshDataSource();
       },
       (error) => {
         console.log(error);
@@ -101,6 +111,7 @@ export class LevelMatrixComponent implements OnInit {
   getCompetenceLevelRequirements() {
     this.competenceLevelRequirementService.getRequirements({ positionId: this.selectedPosition._id }).subscribe(
       (requirements) => {
+        this.allRequrements = requirements;
         var competencesObj = {};
         var competenceGroupsObj = {};
         requirements.forEach((requirement) => {
@@ -123,6 +134,8 @@ export class LevelMatrixComponent implements OnInit {
           competenceGroupsObj[competence.competence.competenceGroup._id].competences.push(competence);
         });
         this.dataSource = Object.values(competenceGroupsObj);
+        console.log(this.dataSource);
+        this.generateForm(this.dataSource);
       },
       (error) => {
         console.log(error);
@@ -130,10 +143,30 @@ export class LevelMatrixComponent implements OnInit {
     );
   }
 
+  generateForm(dataSource) {
+    var formObject = {};
+    this.allRequrements.forEach((requirement) => {
+      formObject[requirement._id] = new FormControl(requirement.mark/*, inRange*/);
+    });
+    this.markInputFormGroup = new FormGroup(formObject);
+    console.log(this.markInputFormGroup);
+  }
+
+  refreshDataSource() {
+    this.getCompetenceLevelRequirements();
+    this.getAdditionalCompetenceGroups();
+  }
+
   saveCompetenceLevelRequirements() {
-    this.competenceLevelRequirementService.editRequirements({ positionId: this.selectedPosition._id }).subscribe(
+    var controls = this.markInputFormGroup.controls;
+    var requirementsToEdit: editRequirement[] = [];
+    for (let key in controls) {
+      requirementsToEdit.push({ _id: key, mark: controls[key].value });
+    }
+    this.competenceLevelRequirementService.editRequirements(requirementsToEdit).subscribe(
       (res) => {
         console.log(res);
+        this.refreshDataSource();
       },
       (error) => {
         console.log(error);

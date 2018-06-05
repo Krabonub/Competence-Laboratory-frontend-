@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, EventEmitter, Output } from '@angular/core';
 
 import { CompetenceLevelRequirementService } from '../../../../../services/competenceLevelRequirements.service';
-import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, FormControl, FormBuilder, FormGroup, NgModel } from '@angular/forms';
+import { CompetenceLevelRequirement } from '../../../../../models/competenceLevelRequirement';
 
 @Component({
   selector: 'app-dblCkickInput',
@@ -9,24 +10,26 @@ import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms'
   styleUrls: ['./dblClickInput.component.scss']
 })
 export class DblClickInput implements OnInit {
-  mark;
-  editorMode = false;
-  @Input() levelRequirement;
+  editorMode: boolean = false;
+  @Input() levelRequirement: CompetenceLevelRequirement;
+  @Input() parentFormGroup: FormGroup;
+  model: number;
 
-  constructor(
-    public competenceLevelRequirementService: CompetenceLevelRequirementService,
-    private formBuilder: FormBuilder
-  ) { }
+  constructor() { }
 
   ngOnInit() {
-    this.mark = this.levelRequirement.mark;
+    this.model = this.levelRequirement.mark;
   }
 
-  validate(value) {
-    console.log(isNaN(value));
+  onInput(event) {
+    if (event.data !== null) {
+      this.model = 0;
+      setTimeout(() => { this.model = event.data }, 0);
+    }
   }
 
   changeMode() {
     this.editorMode = !this.editorMode;
+    console.log(this.editorMode);
   }
 }

@@ -14,6 +14,8 @@ import { CompetenceGroupService } from '../services/competenceGroup.service';
 import { CompetenceService } from '../services/competence.service';
 import { LevelService } from '../services/level.service';
 import { CompetenceLevelRequirementService } from '../services/competenceLevelRequirements.service';
+import { MarkInputDirective } from '../directives/mark-input.directive';
+import { ConfirmationComponent } from '../components/dialogues/confirmation/confirmation.component';
 
 @NgModule({
   providers: [
@@ -25,6 +27,10 @@ import { CompetenceLevelRequirementService } from '../services/competenceLevelRe
     LevelService,
     CompetenceLevelRequirementService
   ],
+  declarations: [
+    MarkInputDirective,
+    ConfirmationComponent
+  ],
   imports: [
     CommonModule,
     DragulaModule,
@@ -35,6 +41,9 @@ import { CompetenceLevelRequirementService } from '../services/competenceLevelRe
     HttpClientModule,
     ReactiveFormsModule
   ],
+  entryComponents: [
+    ConfirmationComponent
+  ],
   exports: [
     CommonModule,
     DragulaModule,
@@ -43,7 +52,9 @@ import { CompetenceLevelRequirementService } from '../services/competenceLevelRe
     FormsModule,
     MaterialModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MarkInputDirective,
+    ConfirmationComponent
   ]
 })
 export class SharedModule { }

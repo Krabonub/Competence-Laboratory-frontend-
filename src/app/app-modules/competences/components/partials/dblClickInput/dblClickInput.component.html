@@ -1,6 +1,6 @@
-<div (dblclick)="changeMode()">
-  <input type="number" min="0" max="4" *ngIf="editorMode" [(ngModel)]="mark" (ngModelChange)="validate($event)">
-  <span *ngIf="!editorMode">
-    {{mark}}
-  </span>
+<div (dblclick)="changeMode()" [formGroup]="parentFormGroup">
+  <input appMarkInput type="number" min="0" max="4" [formControlName]="levelRequirement._id" [ngModel]="model" (focusout)="changeMode()" (input)="onInput($event)" [ngStyle]="{'display': editorMode ? 'block': 'none'}">
+  <div *ngIf="!editorMode">
+    {{model}}
+  </div>
 </div>
