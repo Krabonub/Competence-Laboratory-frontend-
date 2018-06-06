@@ -8,8 +8,9 @@ import { environment } from '../../environments/environment';
 export class EvaluationService extends HttpOptionsService {
   private addEvaluationURL = `${environment.API_URI}/evaluation/add`;
   private editEvaluationURL = `${environment.API_URI}/evaluation/edit`;
-  private getAllEvaluationsURL = `${environment.API_URI}/evaluation/all`;
-  private deleteEvaluationURL = `${environment.API_URI}/evaluation/delete`;
+  //private getAllEvaluationsURL = `${environment.API_URI}/evaluation/all`;
+  //private deleteEvaluationURL = `${environment.API_URI}/evaluation/delete`;
+  private getByUsersURL = `${environment.API_URI}/evaluation/getByUsers`;
 
   constructor(private http: HttpClient) {
     super();
@@ -21,10 +22,15 @@ export class EvaluationService extends HttpOptionsService {
   editevaluation({ evaluationName, evaluationId }) {
     return this.http.post(this.editEvaluationURL, { evaluationName, evaluationId }, this.httpOptions);
   }
+  /*
   getAllevaluations() {
-    return this.http.get(this.editEvaluationURL, this.httpOptions);
+    return this.http.get(this.getAllEvaluationsURL, this.httpOptions);
   }
   deleteevaluation({ evaluationId }) {
-    return this.http.post(this.editEvaluationURL, { evaluationId }, this.httpOptions);
+    return this.http.post(this.deleteEvaluationURL, { evaluationId }, this.httpOptions);
+  }
+  */
+  getByUsers(userIdArr: string[]) {
+    return this.http.post(this.getByUsersURL, { userIdArr }, this.httpOptions);
   }
 }

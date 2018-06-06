@@ -16,6 +16,7 @@ import { LevelService } from '../services/level.service';
 import { CompetenceLevelRequirementService } from '../services/competenceLevelRequirements.service';
 import { MarkInputDirective } from '../directives/mark-input.directive';
 import { ConfirmationComponent } from '../components/dialogues/confirmation/confirmation.component';
+import { EvaluationService } from '../services/evaluation.service';
 
 @NgModule({
   providers: [
@@ -25,7 +26,8 @@ import { ConfirmationComponent } from '../components/dialogues/confirmation/conf
     CompetenceGroupService,
     CompetenceService,
     LevelService,
-    CompetenceLevelRequirementService
+    CompetenceLevelRequirementService,
+    EvaluationService
   ],
   declarations: [
     MarkInputDirective,

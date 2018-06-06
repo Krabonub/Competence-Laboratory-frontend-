@@ -10,14 +10,9 @@ export class ConfirmationComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {}
   
   onNoClick(): void {
     this.dialogRef.close();
   }
-
-  onSubmit(){
-
-  }
-
 }

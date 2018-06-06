@@ -9,6 +9,8 @@ import { LevelService } from '../../../../../services/level.service';
 import { CompetenceLevelRequirementService, editRequirement } from '../../../../../services/competenceLevelRequirements.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CompetenceLevelRequirement } from '../../../../../models/competenceLevelRequirement';
+import { ConfirmationComponent } from '../../../../../components/dialogues/confirmation/confirmation.component';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 /*function inRange(input: FormControl) {
   if (input.value === null || input.value < 0 || input.value > 4 || input.value % 1) {
@@ -37,7 +39,9 @@ export class LevelMatrixComponent implements OnInit {
     public positionService: PositionService,
     public competenceGroupService: CompetenceGroupService,
     public levelService: LevelService,
-    public competenceLevelRequirementService: CompetenceLevelRequirementService
+    public competenceLevelRequirementService: CompetenceLevelRequirementService,
+    public dialog: MatDialog,
+    public snackBar: MatSnackBar
   ) {
     this.markInputFormGroup = new FormGroup({});
   }
@@ -87,25 +91,45 @@ export class LevelMatrixComponent implements OnInit {
   addCompetenceGroup() {
     this.positionService.addCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroupId: this.selectedCompetenceGroup._id }).subscribe(
       (res) => {
-        console.log(res);
+        this.snackBar.open(`The competence group has been successfully added to the position!`, "Ok", {
+          duration: 3000,
+        });
         this.refreshDataSource();
       },
       (error) => {
+        this.snackBar.open(error.error.message, "Ok", {
+          duration: 3000,
+        });
         console.log(error);
       }
     );
   }
 
-  deleteCompetenceGroup(competenceGroupId) {
-    this.positionService.deleteCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroupId }).subscribe(
-      (res) => {
-        console.log(res);
-        this.refreshDataSource();
-      },
-      (error) => {
-        console.log(error);
+  deleteCompetenceGroup(competenceGroup) {
+    let dialogRef = this.dialog.open(ConfirmationComponent, {
+      data: {
+        onSubmit: () => {
+          this.positionService.deleteCompetenceGroup({ positionId: this.selectedPosition._id, competenceGroupId: competenceGroup._id }).subscribe(
+            (res) => {
+              dialogRef.close();
+              this.snackBar.open(`The competence group has been successfully deleted from the position!`, "Ok", {
+                duration: 3000,
+              });
+              this.refreshDataSource();
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        },
+        header: "Delete competence group from position",
+        question: `Are you shure you want to delete the competence group from the position?`
       }
-    );
+    });
+    dialogRef.afterClosed().subscribe((res) => {
+      console.log(res);
+    });
+
   }
 
   getCompetenceLevelRequirements() {
@@ -165,7 +189,9 @@ export class LevelMatrixComponent implements OnInit {
     }
     this.competenceLevelRequirementService.editRequirements(requirementsToEdit).subscribe(
       (res) => {
-        console.log(res);
+        this.snackBar.open("Requirements have been successfully saved!", "Ok", {
+          duration: 3000,
+        });
         this.refreshDataSource();
       },
       (error) => {

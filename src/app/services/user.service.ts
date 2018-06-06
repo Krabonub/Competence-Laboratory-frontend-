@@ -12,6 +12,7 @@ export class UserService extends HttpOptionsService {
   private editUserURL = `${environment.API_URI}/user/edit`;
   private getAllUsersURL = `${environment.API_URI}/user/all`;
   private deleteUserURL = `${environment.API_URI}/user/delete`;
+  private getUsersByQueryURL = `${environment.API_URI}/user/getByQuery`;
 
   constructor(private http: HttpClient) {
     super();
@@ -28,5 +29,8 @@ export class UserService extends HttpOptionsService {
   }
   deleteuser({ userId }): Observable<any> {
     return this.http.post(this.deleteUserURL, { userId }, this.httpOptions);
+  }
+  getUsersByQuery(query) {
+    return this.http.post(this.getUsersByQueryURL, query, this.httpOptions);
   }
 }

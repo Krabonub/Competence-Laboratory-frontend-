@@ -1,3 +1,60 @@
-<p>
-  evaluations works!
-</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Evaluations</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-select placeholder="Position" [(ngModel)]="selectedPosition" (change)="selectPosition()">
+        <mat-option value="all">
+          all positions
+        </mat-option>
+        <mat-option *ngFor="let position of allPositions" [value]="position">
+          {{ position.positionName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select #userSelect placeholder="User" [(ngModel)]="selectedUsers" (change)="selectUsers()" multiple>
+        <mat-select-trigger>
+          {{userSelect.value ? userSelect.value[0] : ""}}
+        </mat-select-trigger>
+        <mat-option value="all" (click)="sellectAllUsers()">
+          all users
+        </mat-option>
+        <mat-option *ngFor="let user of positionUsers" [value]="user">
+          {{ user.firstName +" "+ user.lastName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="accent" (click)="addEvaluation()">Add evaluation</button>
+    <table>
+      <tr>
+        <td>User Name</td>
+        <td *ngFor="let evaluation of evaluations">
+          {{ evaluation.user.firstName +" "+ evaluation.user.lastName }}
+        </td>
+      </tr>
+      <tr>
+        <td>Level</td>
+        <td *ngFor="let evaluation of evaluations">
+          {{ evaluation.user.level}}
+        </td>
+      </tr>
+      <tr>
+        <td>Evaluation date</td>
+        <td *ngFor="let evaluation of evaluations" (click)="editEvaluation(evaluation)">
+          {{ evaluation.date }}
+        </td>
+      </tr>
+      <ng-container *ngFor="let group of competecneGroups">
+        <tr>
+          {{ group.competenceGroupName }}
+        </tr>
+        <tr *ngFor="let competence of group.competences">
+          <td>{{ competence.competenceName }}</td>
+          <td *ngFor="let evaluation of evaluations">{{ evaluation.mark.value }}</td>
+        </tr>
+      </ng-container>
+    </table>
+  </mat-card-content>
+</mat-card>
